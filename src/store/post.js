@@ -49,7 +49,19 @@ export default {
           })
       })
     },
-    
+    deletePost ({commit}, payload) {
+      var token = window.localStorage.getItem('token')
+      return new Promise((resolve, reject) => {
+        axios.delete(`https://nuu-leture-blog.herokuapp.com/api/post/${payload._id}`, { headers: {token} })
+          .then((response) => {
+            console.log(response.data);
+            resolve(response.data)
+          }).catch((err) => {
+            console.log(err.response.data);
+            reject(err.response.data)
+          })
+      })
+    }
   },
   getters: {
     getSelectPost (state) {

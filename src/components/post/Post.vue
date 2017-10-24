@@ -27,7 +27,7 @@
       </div>
       <div class="setting-area" align="right">
         <button type="button" name="button" class="btn btn-success" @click="onEditClick" v-if="editorCheck && !edit">修改</button>
-        <button type="button" name="button" class="btn btn-danger" v-if="editorCheck && !edit">刪除</button>
+        <button type="button" name="button" class="btn btn-danger" @click="onDeleteClick" v-if="editorCheck && !edit">刪除</button>
         <button type="button" name="button" class="btn btn-success" @click="editComplete" v-if="editorCheck && edit">送出</button>
       </div>
     </div>
@@ -95,6 +95,15 @@ export default {
         this.$store.dispatch('getClickPost', this.$route.params.id)
         this.edit = false
       })
+    },
+    onDeleteClick () {
+      this.$store.dispatch('deletePost', { '_id': this.post._id })
+        .then(() => {
+          this.$store.dispatch('getPosts')
+          this.$router.push('/')
+        }).catch((err) => {
+          alert(err)
+        })
     }
   },
   destroyed () {
