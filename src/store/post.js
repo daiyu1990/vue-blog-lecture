@@ -11,6 +11,15 @@ export default {
     },
     setSelectPost (state, payload) {
       state.selectPost = payload
+    },
+    updateTitle (state, payload) {
+      state.selectPost.title = payload
+    },
+    updateSubtopic (state, payload) {
+      state.selectPost.subtopic = payload
+    },
+    updateDescription (state, payload) {
+      state.selectPost.description = payload
     }
   },
   actions: {
@@ -26,7 +35,21 @@ export default {
         .then((response) => {
           commit('setSelectPost', response.data);
         })
-    }
+    },
+    editPost ({commit}, payload) {
+      var token = window.localStorage.getItem('token')
+      return new Promise((resolve, reject) => {
+        axios.put(`https://nuu-leture-blog.herokuapp.com/api/posts`, payload, { headers: {token} })
+          .then((response) => {
+            console.log(response.data);
+            resolve();
+          }).catch((err) => {
+            console.log(err.response.data);
+            reject();
+          })
+      })
+    },
+    
   },
   getters: {
     getSelectPost (state) {
