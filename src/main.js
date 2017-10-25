@@ -12,7 +12,7 @@ import store from './store'
 Vue.use(VueAxios, axios)
 Vue.use(VueMomentJS, moment);
 
-router.beforeResolve((to, from, next) => {
+router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     store.dispatch('checkToken').then(() => {
       next()
