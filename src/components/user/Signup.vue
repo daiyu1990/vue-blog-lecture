@@ -91,7 +91,6 @@ export default {
     email (value) {
       this.axios.get(`https://nuu-leture-blog.herokuapp.com/api/user/uniqueEmail/${value}`)
         .then((response) => {
-          console.log('sussece')
           this.emailStatus = null;
         }).catch((err) => {
           this.emailStatus = err.response.data

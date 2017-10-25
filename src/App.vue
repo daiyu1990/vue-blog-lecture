@@ -15,11 +15,7 @@ export default {
   },
   created () {
     this.$store.dispatch('getPosts')
-    this.$store.dispatch('checkToken').then(() => {
-      this.$router.push('/')
-    }).catch(() => {
-      this.$router.push('/')
-    })
+    this.$store.dispatch('checkToken')
   }
 }
 </script>

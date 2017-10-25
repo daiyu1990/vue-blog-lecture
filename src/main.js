@@ -12,15 +12,21 @@ import store from './store'
 Vue.use(VueAxios, axios)
 Vue.use(VueMomentJS, moment);
 
-router.beforeEach((to, from, next) => {
+router.beforeResolve((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.state.user.user) {
-      next('/signin');
-    } else {
-      next();
-    }
+    store.dispatch('checkToken').then(() => {
+      next()
+    }).catch(() => {
+      next('/signin')
+    })
+  } else if (to.matched.some(record => record.meta.requiresLogged)){
+    store.dispatch('checkToken').then(() => {
+      next('/')
+    }).catch(() => {
+      next()
+    })
   } else {
-    next();
+    next()
   }
 })
 

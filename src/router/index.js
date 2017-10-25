@@ -15,9 +15,9 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: '/signin', name: 'signin', component: Signin },
+    { path: '/signin', name: 'signin', component: Signin, meta: { requiresLogged: true } },
     { path: '/profile', name: 'profile', component: Profile, meta: { requiresAuth: true } },
-    { path: '/signup', name: 'signup', component: Signup },
+    { path: '/signup', name: 'signup', component: Signup, meta: { requiresLogged: true } },
     { path: '/logout', name: 'logout', component: Logout },
     { path: '/', name: 'postsList', component: PostsList,
       children: [
