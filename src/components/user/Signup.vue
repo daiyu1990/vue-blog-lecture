@@ -3,6 +3,7 @@
     <div class="row">
       <div class="col-md-4"></div>
       <div class="col-md-4">
+        <h1>Signup</h1>
         <form @submit.prevent="onSubmitSignup">
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>

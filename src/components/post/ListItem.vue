@@ -6,7 +6,6 @@
     </div>
     <p class="mb-1">{{post.subtopic}}</p>
     <small class="text-muted">By: {{post.author.email}}</small>
-    <!-- <pre >{{post.author.email}}</pre> -->
   </a>
 </template>
 
@@ -29,5 +28,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  
+  .list-group-item {
+    cursor: pointer;
+  }
 </style>

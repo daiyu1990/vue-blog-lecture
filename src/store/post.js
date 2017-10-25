@@ -41,11 +41,9 @@ export default {
       return new Promise((resolve, reject) => {
         axios.put(`https://nuu-leture-blog.herokuapp.com/api/posts`, payload, { headers: {token} })
           .then((response) => {
-            console.log(response.data);
-            resolve();
+            resolve(response.data);
           }).catch((err) => {
-            console.log(err.response.data);
-            reject();
+            reject(err.response.data);
           })
       })
     },

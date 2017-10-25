@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="container">
+    <h1>New Post</h1>
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="title">Title</label>

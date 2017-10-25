@@ -3,34 +3,37 @@
     <div class="loading-img">
       <img src="../../assets/loading.gif" alt="" v-if="!$store.state.post.selectPost">
     </div>
-    <div class="alert-block" v-if="$store.state.post.selectPost">
-      <div class="top-area">
-        <button @click="onMaskClick"><i class="fa fa-times" aria-hidden="true"></i></button>
-      </div>
-      <div class="center-area">
-        <div class="title">
-          <h2>{{post.title}}</h2>
-          <input type="text" :value="post.title" @input="updateTitle" v-if="edit">
+    <transition name="fade">
+      <div class="alert-block" v-if="$store.state.post.selectPost">
+        <div class="top-area">
+          <button @click="onMaskClick"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
-        <div class="subtopic">
-          <h4>{{post.subtopic}}</h4>
-          <input type="text" v-model="post.subtopic" v-if="edit">
+        <div class="center-area">
+          <div class="title">
+            <h2>{{post.title}}</h2>
+            <input type="text" :value="post.title" @input="updateTitle" v-if="edit">
+          </div>
+          <div class="subtopic">
+            <h4>{{post.subtopic}}</h4>
+            <input type="text" v-model="post.subtopic" v-if="edit">
+          </div>
+          <div class="description">
+            <p>{{post.description}}</p>
+            <input type="text" v-model="post.description" v-if="edit">
+          </div>
         </div>
-        <div class="description">
-          <p>{{post.description}}</p>
-          <input type="text" v-model="post.description" v-if="edit">
+        <div class="bottom-area text-muted" align="right">
+          <p>{{timeStamp}}</p>
+          <p>By: {{post.author.email}}</p>
+        </div>
+        <div class="setting-area" align="right">
+          <button type="button" name="button" class="btn btn-success" @click="onEditClick" v-if="editorCheck && !edit">修改</button>
+          <button type="button" name="button" class="btn btn-danger" @click="onDeleteClick" v-if="editorCheck && !edit">刪除</button>
+          <button type="button" name="button" class="btn btn-success" @click="editComplete" v-if="editorCheck && edit">送出</button>
         </div>
       </div>
-      <div class="bottom-area text-muted" align="right">
-        <p>{{timeStamp}}</p>
-        <p>By: {{post.author.email}}</p>
-      </div>
-      <div class="setting-area" align="right">
-        <button type="button" name="button" class="btn btn-success" @click="onEditClick" v-if="editorCheck && !edit">修改</button>
-        <button type="button" name="button" class="btn btn-danger" @click="onDeleteClick" v-if="editorCheck && !edit">刪除</button>
-        <button type="button" name="button" class="btn btn-success" @click="editComplete" v-if="editorCheck && edit">送出</button>
-      </div>
-    </div>
+    </transition>
+
     <div class="back-mask" @click="onMaskClick">
     </div>
   </div>
@@ -89,21 +92,27 @@ export default {
       this.edit = true;
     },
     editComplete () {
-      this.$store.dispatch('editPost', { '_id': this.post._id, title: this.post.title, subtopic: this.post.subtopic, description: this.post.description }).then(() => {
+      this.$store.dispatch('editPost', { '_id': this.post._id, title: this.post.title, subtopic: this.post.subtopic, description: this.post.description }).then((response) => {
         this.edit = false
-      }).catch(() => {
+        alert(response)
+      }).catch((err) => {
+        alert(err)
         this.$store.dispatch('getClickPost', this.$route.params.id)
         this.edit = false
       })
     },
     onDeleteClick () {
-      this.$store.dispatch('deletePost', { '_id': this.post._id })
-        .then(() => {
-          this.$store.dispatch('getPosts')
-          this.$router.push('/')
-        }).catch((err) => {
-          alert(err)
-        })
+      var confirm = window.confirm('確定要刪除嗎？')
+      if (confirm) {
+        this.$store.dispatch('deletePost', { '_id': this.post._id })
+          .then((response) => {
+            alert(response)
+            this.$store.dispatch('getPosts')
+            this.$router.push('/')
+          }).catch((err) => {
+            alert(err)
+          })
+      }
     }
   },
   destroyed () {
@@ -113,6 +122,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+
 .setting-area {
   padding-bottom: 8px;
 }
