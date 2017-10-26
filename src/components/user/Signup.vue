@@ -56,8 +56,7 @@ export default {
       name: '',
       status: '',
       emailStatus: null,
-      passwordStatus: null,
-      confirmPasswordStatus: null
+      passwordStatus: null
     }
   },
   methods: {
@@ -72,12 +71,15 @@ export default {
     //   })
     // }
     onSubmitSignup () {
-      this.$store.dispatch('onSubmitSignup', { email: this.email, name: this.name, password: this.password }).then(() => {
-        // window.location.reload();
-        this.$router.push('/')
-      }).catch((err) => {
-        this.status = err
-      })
+      if (this.password == this.confirmPassword && !this.emailStatus && !this.passwordStatus && !this.confirmPasswordStatus) {
+        this.$store.dispatch('onSubmitSignup', { email: this.email, name: this.name, password: this.password }).then(() => {
+          this.$router.push('/')
+        }).catch((err) => {
+          this.status = err
+        })
+      } else {
+        alert('請檢查填寫內容')
+      }
     }
   },
   watch: {
@@ -95,13 +97,17 @@ export default {
         }).catch((err) => {
           this.emailStatus = err.response.data
         })
-    },
-    confirmPassword (value) {
-      if (value !== this.password) {
-        this.confirmPasswordStatus = '與密碼不相同'
+    }
+  },
+  computed: {
+    confirmPasswordStatus () {
+      var confirmStatus;
+      if (this.confirmPassword !== this.password) {
+        confirmStatus = '與密碼不相同'
       } else {
-        this.confirmPasswordStatus = null;
+        confirmStatus = null;
       }
+      return confirmStatus;
     }
   }
 }
