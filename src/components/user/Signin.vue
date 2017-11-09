@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -48,6 +49,13 @@ export default {
           this.status = err
         })
     }
+  },
+  computed: {
+    ...mapState(['name']),
+    ...mapState({
+      age: state => state.age,
+      loading: state => state.user.loading
+    })
   }
 }
 </script>
